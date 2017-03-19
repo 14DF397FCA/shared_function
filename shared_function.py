@@ -4,6 +4,9 @@ from dateutil import relativedelta
 import calendar
 import psycopg2
 
+date_format_short = "%Y-%m-%d"
+date_format_long = "%Y-%m-%d %H:%M:%S"
+
 
 #   open connection with database
 #   open_connection_with_db(...)
@@ -87,64 +90,101 @@ def set_search_path_db(cursor, dbname, debug=False):
     return run_query(cursor=cursor, query=query)
 
 
-#   Convert string to date
-def str_to_date(date_str):
-    return datetime.strptime(date_str, "%Y-%m-%d").date()
+#   Convert string to date in custom format
+def string_to_date_time_custom(date_string, date_time_custom_format):
+    return datetime.strptime(date_string, date_time_custom_format).date()
 
 
-#   Get today
-def get_today():
-    return str(date.today().strftime("%Y-%m-%d"))
+#   Convert string to date time in long (%Y-%m-%d %H:%M:%S) format
+def string_to_date_full(date_string):
+    return string_to_date_time_custom(date_string=date_string, date_time_custom_format=date_format_long)
 
 
-#   Get next date
-def get_next_date(date_str):
-    return str(datetime.strptime(str(date_str), "%Y-%m-%d").date() + relativedelta.relativedelta(days=1))
+#   Convert string to date in short (%Y-%m-%d) format
+def string_to_date_short(date_string):
+    return string_to_date_time_custom(date_string=date_string, date_time_custom_format=date_format_short)
 
 
-#   Get last day of month
-def get_last_day_of_month(date_str):
-    in_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-    _, num_days = calendar.monthrange(in_date.year, in_date.month)
-    return str(str(in_date.year) + "-" + str(in_date.month) + "-" + str(num_days))
+#   Get current date in custom format
+def get_current_date_time_custom_format(date_time_custom_format):
+    return datetime.today().strftime(date_time_custom_format)
+
+
+#   Get current date in short format
+def get_current_date():
+    return get_current_date_time_custom_format(date_time_custom_format=date_format_short)
+
+
+#   Get current date and time in long format
+def get_current_date_time():
+    return get_current_date_time_custom_format(date_time_custom_format=date_format_long)
+
+
+#   Get next date in period
+def get_date_period(current_date, period, date_time_format=date_format_short):
+    return str(datetime.strptime(str(current_date), date_time_format).date() + relativedelta.relativedelta(days=period))
+
+
+#   Get next date (tomorrow)
+def get_tomorrow():
+    return get_date_period(current_date=get_current_date(), date_time_format=date_format_short, period=1)
+
+
+#   Get previous date (yesterday)
+def get_yesterday():
+    return get_date_period(current_date=get_current_date(), date_time_format=date_format_short, period=-1)
+
+
+#   Get month next, previous in custom format, by default in short
+def get_month_period(date_string, period):
+    return str(datetime.strptime(str(date_string), date_format_short).date() + relativedelta.relativedelta(months=period))
+
+
+#   Get next month in short format
+def get_month_next(date_string):
+    return str(get_month_period(date_string=date_string, period=1))
+
+
+#   Get previous month in short format
+def get_month_previous(date_string):
+    return str(get_month_period(date_string=date_string, period=-1))
 
 
 #   Get first day of month
-def get_first_day_of_month(date_str):
-    in_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-    return str(in_date.year) + "-" + str(in_date.month) + "-01"
-
-
-#   Get next month
-def get_next_month(date_str):
-    return str(datetime.strptime(str(date_str), "%Y-%m-%d").date() + relativedelta.relativedelta(months=1))
-
-
-#   Get previous month
-def get_prev_month(date_str):
-    return str(datetime.strptime(str(date_str), "%Y-%m-%d").date() + relativedelta.relativedelta(months=-1))
+def get_first_day_of_month(date_string):
+    in_date = datetime.strptime(date_string, date_format_short).date()
+    return str(string_to_date_short(str(in_date.year) + "-" + str(in_date.month) + "-01"))
 
 
 #   Get first day of next month
-def get_first_day_of_next_month(date_str):
-    return str(get_first_day_of_month(get_next_month(date_str)))
+def get_first_day_of_next_month(date_string):
+    return get_month_next(get_first_day_of_month(date_string))
+
+
+#   Get last day of month
+def get_last_day_of_month(date_string):
+    in_date = datetime.strptime(date_string, date_format_short).date()
+    _, num_days = calendar.monthrange(in_date.year, in_date.month)
+    return str(string_to_date_short(str(in_date.year) + "-" + str(in_date.month) + "-" + str(num_days)))
 
 
 #   Get last day of next month
-def get_last_day_of_next_month(date_str):
-    return str(get_last_day_of_month(get_next_month(date_str)))
+def get_last_day_of_next_month(date_string):
+    return get_last_day_of_month(get_month_next(date_string))
 
 
-#   Get next/previous date by period
-def get_date_by_period(date_str, period):
-    return datetime.strptime(str(date_str), "%Y-%m-%d").date() + relativedelta.relativedelta(days=period)
+#   Get first day of previous month
+def get_first_day_of_previous_month(date_string):
+    return get_first_day_of_month(get_month_previous(date_string))
 
 
-#   Get next period
-def get_next_period(date_str):
-    return get_date_by_period(date_str=str(date_str), period=30)
+#   Get number of days in month
+def get_days_number(date_string):
+    in_date = datetime.strptime(date_string, date_format_short).date()
+    _, num_days = calendar.monthrange(in_date.year, in_date.month)
+    return str(num_days)
 
 
-#   Get previous date
-def get_previous_period(date_str):
-    return get_date_by_period(date_str=str(date_str), period=-30)
+#   Get last day of previous month
+def get_last_day_of_previous_month(date_string):
+    return get_last_day_of_month(get_month_previous(date_string))
