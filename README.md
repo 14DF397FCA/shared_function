@@ -18,7 +18,7 @@ def get_first_day_of_month(date_string):
 def get_first_day_of_next_month(date_string):
 def get_last_day_of_month(date_string):
 def get_last_day_of_next_month(date_string):
-def get_first_day_of_previous_month(date_string):
+def get_1first_day_of_previous_month(date_string):
 def get_days_number(date_string):
 def get_last_day_of_previous_month(date_string):
 
