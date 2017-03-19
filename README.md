@@ -22,7 +22,7 @@ def get_first_day_of_previous_month(date_string):
 def get_days_number(date_string):
 def get_last_day_of_previous_month(date_string):
 
-# Function for work with Postgresql
+# Functions for work with Postgresql
 def open_connection_with_db(dbname, dbuser, dbpass, dbhost="localhost", dbport=5432, debug=False):
 def close_connection_with_db(cursor):
 def run_query(cursor, query, debug=False):
