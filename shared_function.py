@@ -3,6 +3,8 @@ from datetime import datetime
 from dateutil import relativedelta
 import calendar
 import psycopg2
+import os
+import sys
 
 date_format_short = "%Y-%m-%d"
 date_format_long = "%Y-%m-%d %H:%M:%S"
@@ -188,3 +190,51 @@ def get_days_number(date_string):
 #   Get last day of previous month
 def get_last_day_of_previous_month(date_string):
     return get_last_day_of_month(get_month_previous(date_string))
+
+
+#   Decode system environments
+def decode_system_env(sys_env):
+    try:
+        if sys_env[0] == "$":
+            return os.environ.get(sys_env[1:len(sys_env)])
+        else:
+            return os.environ.get(sys_env)
+    except Exception as e:
+        return e
+
+
+#   Get index of char
+def get_char_index(string, char):
+    try:
+        return str(string).index(char)
+    except IndexError as e:
+        return e
+
+
+#   Get folder with script
+def get_script_folder():
+    return os.path.dirname(sys.argv[0])
+
+
+#   Create folder if it not exists
+def create_folder(folder_path):
+    try:
+        if folder_path[0] == "$":
+            if "/" in folder_path:
+                index = get_char_index(string=folder_path, char="/")
+                folder_path_tmp = decode_system_env(sys_env=folder_path[1:index]) + folder_path[index:len(folder_path)]
+                if not os.path.exists(folder_path_tmp):
+                    return os.makedirs(folder_path_tmp)
+            else:
+                folder_path_tmp = decode_system_env(folder_path)
+                if not os.path.exists(folder_path_tmp):
+                    return os.makedirs(folder_path_tmp)
+        elif folder_path[0] != "$" and folder_path[0] != "/":
+            path = get_script_folder() + "/" + folder_path
+            if not os.path.exists(path):
+                return os.makedirs(path)
+        else:
+            if not os.path.exists(folder_path):
+                return os.makedirs(folder_path)
+    except Exception as e:
+        return e
