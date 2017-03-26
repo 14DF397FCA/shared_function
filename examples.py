@@ -1,5 +1,24 @@
 import shared_function as sf
 
+#   Return position of substring
+print(str(sf.get_char_index(string="/home/my/path", char="y")))
+
+#   Create folder if it not already exists
+#   Get value of $HOME, append "/aaa/bbb" and create this folder
+print(sf.create_folder(folder_path="$HOME/aaa/bbb"))
+#   Create folder with value of $HOME
+print(sf.create_folder(folder_path="$HOME"))
+#   Create folder with path "/home/user/q/w/e"
+print(sf.create_folder(folder_path="/home/user/q/w/e"))
+#   If folder path start without / or $ folder will create in script folder
+print(sf.create_folder(folder_path="zzz/xxx"))
+
+#   Simple function for get system environment
+print(sf.decode_system_env(sys_env="$HOME"))
+
+#   Return script folder
+print(sf.get_script_folder())
+
 #   To get current date in short you should call
 print("function - get_current_date")
 data = sf.get_current_date()
