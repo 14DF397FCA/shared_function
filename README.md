@@ -31,5 +31,16 @@ def drop_table(cursor, table_name, debug=False):
 def create_table(cursor, table_name, data_types, debug=False):
 def set_search_path_db(cursor, dbname, debug=False):
 
+# Create folder, if it not exist
+def create_folder(folder_path):
+
+# Get folder with script
+def get_script_folder():
+
+# Get index of char
+def get_char_index(string, char):
+
+See examples for details.
+
 # Required packages
 dateutils, calendar, psycopg2, datetime
