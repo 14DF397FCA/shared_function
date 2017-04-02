@@ -1,5 +1,5 @@
 # Info
-Several useful functions for simple work with date, postgresql.
+Several useful functions for simple work with date, PostgreSQL.
 
 # Functions for work with date
 def string_to_date_time_custom(date_string, date_time_custom_format):
@@ -22,7 +22,7 @@ def get_first_day_of_previous_month(date_string):
 def get_days_number(date_string):
 def get_last_day_of_previous_month(date_string):
 
-# Functions for work with Postgresql
+# Functions for work with PostgreSQL
 def open_connection_with_db(dbname, dbuser, dbpass, dbhost="localhost", dbport=5432, debug=False):
 def close_connection_with_db(cursor):
 def run_query(cursor, query, debug=False):
@@ -41,6 +41,9 @@ def get_script_folder():
 def get_char_index(string, char):
 
 See examples for details.
+
+# Class for with PostgreSQL, based on psycopg2
+New simple (saved in file pypsql.py) class for with PostgreSQL from Python3. See pysql_examples.py for details.
 
 # Required packages
 dateutils, calendar, psycopg2, datetime
