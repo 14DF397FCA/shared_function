@@ -1,3 +1,6 @@
+"""
+Example of using class PyPSQL.
+"""
 import pypsql
 
 database = "hh"
