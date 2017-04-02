@@ -1,3 +1,8 @@
+"""
+Simple Python3 class for work with PostgreSQL.
+Allows to run basic queries, such as - create, drop, rename and truncate table. Checking exist of the table. Fast method to get number of rows. "query" for other queries.
+Required module - psycopg2.
+"""
 try:
     import psycopg2
 except ImportError:
