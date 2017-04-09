@@ -19,6 +19,10 @@ class PyPSQL:
         self.dbpass = dbpass
         self.dbhost = dbhost
         self.dbport = dbport
+        self.cursor = None
+        self.connected = False
+        self._dbname = ""
+        self._dbuser = ""
 
     def __del__(self):
         self.cursor.close()
@@ -34,6 +38,10 @@ class PyPSQL:
 
     @property
     def dbname(self):
+        """
+        Property dbname - database name
+        :return: 
+        """
         return self._dbname
 
     @dbname.setter
@@ -44,6 +52,10 @@ class PyPSQL:
 
     @property
     def dbuser(self):
+        """
+        Property dbuser - database user
+        :return: 
+        """
         return self._dbuser
 
     @dbuser.setter
@@ -65,6 +77,7 @@ class PyPSQL:
                                           port=self.dbport)
             self.cursor = connection.cursor()
             self.set_search_path()
+            self.connected = True
         except psycopg2.Error as e:
             raise e.diag.message_primary
 
