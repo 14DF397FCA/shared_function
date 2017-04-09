@@ -42,8 +42,10 @@ def get_char_index(string, char):
 
 See examples for details.
 
-# Class for with PostgreSQL, based on psycopg2
+# Class for work with PostgreSQL, based on psycopg2
 New simple (saved in file pypsql.py) class for with PostgreSQL from Python3. See pysql_examples.py for details.
+* Property "connected" is True when connection established.
+
 
 # Required packages
 dateutils, calendar, psycopg2, datetime
