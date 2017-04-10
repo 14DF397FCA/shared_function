@@ -9,6 +9,7 @@ datapass = "qqqqqQ!1"
 psql = pypsql.PyPSQL(dbname=database, dbuser=datauser, dbpass=datapass)
 print(psql.dsn_string())
 psql.connect()
+psql.set_search_path()
 if psql.connected:
     a = psql.query(query="SELECT * FROM vacancies LIMIT 1;")
     for r in a.fetchall():

@@ -76,7 +76,6 @@ class PyPSQL:
                                           host=self.dbhost,
                                           port=self.dbport)
             self.cursor = connection.cursor()
-            self.set_search_path()
             self.connected = True
         except psycopg2.Error as e:
             raise e.diag.message_primary

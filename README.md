@@ -44,7 +44,8 @@ See examples for details.
 
 # Class for work with PostgreSQL, based on psycopg2
 New simple (saved in file pypsql.py) class for with PostgreSQL from Python3. See pysql_examples.py for details.
-* Property "connected" is True when connection established.
+* Property "connected" is True when connection established;
+* Added function set_search_path().
 
 
 # Required packages
