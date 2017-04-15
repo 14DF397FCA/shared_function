@@ -11,11 +11,17 @@ except ImportError:
 
 class PyPSQL:
     """
-    Simple class for work with postgresql from python
+    Wrapper class for work with PostgreSQL from Python3
     """
     def __init__(self, dbname, dbuser, dbpass="", dbhost="localhost", dbport="5432"):
-        self.dbname = dbname
-        self.dbuser = dbuser
+        if dbname:
+            self.dbname = dbname
+        else:
+            raise ValueError("Database name can not be empty")
+        if dbuser:
+            self.dbuser = dbuser
+        else:
+            raise ValueError("Database user can not be empty")
         self.dbpass = dbpass
         self.dbhost = dbhost
         self.dbport = dbport
@@ -35,34 +41,6 @@ class PyPSQL:
         """
         return "dbname='{db_name}', dbuser='{db_user}', db_pass='{db_pass}', db_host='{db_host}', db_port='{db_port}'".\
             format(db_name=self.dbname, db_user=self.dbuser, db_pass=self.dbpass, db_host=self.dbhost, db_port=self.dbport)
-
-    @property
-    def dbname(self):
-        """
-        Property dbname - database name
-        :return: 
-        """
-        return self._dbname
-
-    @dbname.setter
-    def dbname(self, dbname):
-        if not dbname:
-            raise ValueError("Database name can not be empty")
-        self._dbname = dbname
-
-    @property
-    def dbuser(self):
-        """
-        Property dbuser - database user
-        :return: 
-        """
-        return self._dbuser
-
-    @dbuser.setter
-    def dbuser(self, dbuser):
-        if not dbuser:
-            raise ValueError("Database user can not be empty")
-        self._dbuser = dbuser
 
     def connect(self):
         """
@@ -95,12 +73,14 @@ class PyPSQL:
         except psycopg2.Error as e:
             raise e.diag.message_primary
 
-    def set_search_path(self):
+    def set_search_path(self, search_to=""):
         """
         Set search_path to your database
         :return:
         """
-        self.query(query="SET search_path TO " + self.dbname + ";")
+        if search_to == "":
+            search_to = self.dbname
+        self.query(query="SET search_path TO " + search_to + ";")
 
     def truncate(self, table_name):
         """
@@ -133,7 +113,7 @@ class PyPSQL:
             raise ValueError("Table name is empty")
         self.query(query="DROP TABLE IF EXISTS " + table_name + ";")
 
-    def check_table_exist(self, table_name):
+    def check_table_exists(self, table_name):
         """
         Checking exist of the table
         :param table_name: Name of table
