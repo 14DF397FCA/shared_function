@@ -1,4 +1,10 @@
 import shared_function as sf
+from inifiles import IniFiles
+
+#   Write and read ini file
+ini = IniFiles(config_file="sett.ini")
+ini.write_option("section", "option", "value")
+print(ini.read_option("section", "option"))
 
 #   Return position of substring
 print(str(sf.get_char_index(string="/home/my/path", char="y")))

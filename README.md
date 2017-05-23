@@ -47,6 +47,10 @@ New simple (saved in file pypsql.py) class for with PostgreSQL from Python3. See
 * Property "connected" is True when connection established;
 * Added function set_search_path().
 
+# IniFiles
+Class "IniFiles" is simple class for work with ini files, without any checking. Just read and save value.
+
+
 
 # Required packages
-dateutils, calendar, psycopg2, datetime
+dateutils, calendar, psycopg2, datetime, configparser
