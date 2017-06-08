@@ -1,3 +1,6 @@
+"""
+Version 1.0
+"""
 from configparser import ConfigParser
 
 
