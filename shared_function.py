@@ -213,7 +213,8 @@ def get_char_index(string, char):
 
 #   Get folder with script
 def get_script_folder():
-    return os.path.dirname(sys.argv[0])
+    # return os.path.dirname(sys.argv[0])
+    return os.getcwd()
 
 
 #   Create folder if it not exists
