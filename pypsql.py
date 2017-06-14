@@ -1,4 +1,5 @@
 """
+Version 1.1
 Simple Python3 class for work with PostgreSQL.
 Allows to run basic queries, such as - create, drop, rename and truncate table. Checking exist of the table. Fast method to get number of rows. "query" for other queries.
 Required module - psycopg2.
@@ -39,7 +40,7 @@ class PyPSQL:
         Build DSN string
         :return: DSN string
         """
-        return "dbname='{db_name}', dbuser='{db_user}', db_pass='{db_pass}', db_host='{db_host}', db_port='{db_port}'".\
+        return "dbname={db_name} dbuser={db_user} db_pass={db_pass} db_host={db_host} db_port={db_port}".\
             format(db_name=self.dbname, db_user=self.dbuser, db_pass=self.dbpass, db_host=self.dbhost, db_port=self.dbport)
 
     def connect(self):
@@ -47,12 +48,16 @@ class PyPSQL:
         Connect with specified database
         :return: cursor to database or error
         """
+        connection = None
         try:
             connection = psycopg2.connect(database=self.dbname,
                                           user=self.dbuser,
                                           password=self.dbpass,
                                           host=self.dbhost,
                                           port=self.dbport)
+        except psycopg2.Error as e:
+            raise e.diag.message_primary
+        try:
             self.cursor = connection.cursor()
             self.connected = True
         except psycopg2.Error as e:
@@ -146,3 +151,14 @@ class PyPSQL:
             raise ValueError("Table name is empty")
         self.query(query="SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = " + table_name + ";")
         return self.cursor.fetchone()[0]
+
+    def copy_expert(self, query, io_steam):
+        """
+        Submit a user-composed COPY statement. The method is useful to handle all the parameters that PostgreSQL makes
+        available (see COPY command documentation)
+        http://initd.org/psycopg/docs/cursor.html
+        :param query:
+        :param io_steam:
+        :return:
+        """
+        self.cursor.copy_expert(query, io_steam)
